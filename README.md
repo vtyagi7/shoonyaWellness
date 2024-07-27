@@ -2,7 +2,13 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+npm i => to install node modules
+npm i react-icons =>icons
+then, 
+npm run dev => to run the development server
+
 First, run the development server:
+
 
 ```bash
 npm run dev
