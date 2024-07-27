@@ -17,7 +17,7 @@ const Retreat = () => {
     const [filterType,setFilterType]=useState("");
     const [filterDate,setFilterDate]=useState("");
     const [filterSearch, setFilterSearch]=useState("");
-    const inputRef = useRef("");
+    const inputRef = useRef(null);
     
     
     
@@ -36,24 +36,23 @@ const Retreat = () => {
         if(limit) {
           fetchURL+="limit="+ limit+ "&";
         }
+        try{
+            let data = await fetch(fetchURL,{
+                headers: {
+                 "Content-Type": "application/json",
+               }
+               });
+            data= await data.json();
+            console.log(data);
+            if(data.length<=0)
+                return;
+            setCards(data);
+            setPage(page);
 
-        console.log(fetchURL);
-        let data = await fetch(fetchURL,{
-            headers: {
-             "Content-Type": "application/json",
-           }
-           });
-        data= await data.json();
-        console.log(data);
-        if(data.length<=0)
-            return;
-        setCards(data);
-        setPage(page);
-        console.log(cards);
-        console.log(page);
-
-
-        
+        }catch (error) {
+            console.error(error.message);
+            
+          }
         };
 
     useEffect(() => {
@@ -75,19 +74,20 @@ const Retreat = () => {
         let filter=e.target.value;
         callAPI(filter,"",1,limit);
         setFilterType(filter);
+        setFilterSearch("");
     }
 
     function dateHandler(e){
 
     }
 
-    function handleSearch( ) {
-        debugger;
+    function handleSearch(e) {
+        e.stopPropagation();
+        e.preventDefault();
         let search=inputRef.current.value;
-        
-        console.log(search);
         callAPI("",search,1,limit);
         setFilterSearch(search);
+        setFilterType("");
       }
 
   return (
@@ -121,7 +121,7 @@ const Retreat = () => {
                                     <div className=" w-full">
                                         <input type="text" id="simple-search" ref={inputRef} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full  focus:ring-[#405D72] focus:border-[#405D72] block w-full ps-5 p-2.5" placeholder="Search retreats by title" required />
                                     </div>
-                                    <button type="submit" onClick={handleSearch} className="p-2.5 ms-2 text-sm font-medium text-white hover:bg-[#758694] rounded-lg border border-[#758694] bg-[#405D72]">
+                                    <button onClick={handleSearch} className="p-2.5 ms-2 text-sm font-medium text-white hover:bg-[#758694] rounded-lg border border-[#758694] bg-[#405D72]">
                                         <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                         </svg>
