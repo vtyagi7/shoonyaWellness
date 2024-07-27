@@ -2,6 +2,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+react icons are used. run
+npm i react-icons
+
 First, run the development server:
 
 ```bash
